@@ -1,1 +1,4 @@
-.vagrant
+.vagrant/
+.venv/
+ansible/roles/*
+!ansible/roles/openjdk11jre-windows/

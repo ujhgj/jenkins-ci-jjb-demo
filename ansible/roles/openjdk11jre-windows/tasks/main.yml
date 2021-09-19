@@ -1,0 +1,21 @@
+---
+
+- name: Install JRE
+  win_chocolatey:
+    name: "openjdk11jre"
+    state: present
+    version: "11.0.12.7"
+  notify: reboot windows
+
+- name: Set Java_home
+  win_environment:
+    state: present
+    name: JAVA_HOME
+    value: 'C:\Program Files\OpenJDK\openjdk-11.0.12_7-jre'
+    level: machine
+
+- name: Add Java to path
+  win_path:
+    elements:
+      - 'C:\Program Files\OpenJDK\openjdk-11.0.12_7-jre\bin'
+    state: present
