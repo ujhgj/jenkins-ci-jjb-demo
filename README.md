@@ -1,7 +1,7 @@
 # Jenkins CI + JJB (Vagrant demo)
 
 ## Description
-This repo implements demo of CI for sample project.
+This repo implements Continuous Integration demo for sample project.
 
 Environment:
 Jenkins master + 2 slaves:
