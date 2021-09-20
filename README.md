@@ -13,9 +13,11 @@ Environment is configured using Infrastructure as Code approach with Vagrant and
 ## Prerequisites
 
 You must have this software installed and configured:
-- Vagrant
-- Virtualbox
-- python3.8
+- [Vagrant](https://www.vagrantup.com)
+- [Virtualbox](https://www.virtualbox.org)
+- [python3.8](https://www.python.org)
+
+Visit the sites for installation instructions.
 
 ## Up and running
 
