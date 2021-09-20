@@ -19,7 +19,7 @@ You must have this software installed and configured:
 
 Visit the sites for installation instructions.
 
-## Up and running
+## Porject Up and Running
 
 1. Create python virtual environment and activate it:
    ```bash
@@ -39,12 +39,12 @@ Visit the sites for installation instructions.
    ```bash
    jenkins-jobs --conf jenkins-job-builder/config.ini --server jenkins-master update jenkins-job-builder/pipeline.yml
    ```
-5. Manually add jenkins' slaves: login using these credentials
+5. **Manually** add jenkins' slaves: login using these credentials
    ```
    user: admin
    password: admin
    ```
-   to the page http://127.0.0.1:8080/computer/new and add two slaves:
+   to the page http://127.0.0.1:8080/computer/new and add these two slaves:
    - windows-slave
    - linux-slave
 
@@ -57,7 +57,17 @@ Visit the sites for installation instructions.
    vagrant ssh slave2
    powershell.exe  C:\Users\vagrant\run-jenkins-agent.ps1
    ```
-6. At this point the environment will be ready and you will be able to use the pipeline: http://127.0.0.1:8080/job/test_job/ 
+6. At this point you will be able to use the pipeline: http://127.0.0.1:8080/job/test_job/ 
+    Pipeline posts system info in an unified format:
+    ```
+    Host name:
+    OS version:
+    CPU cores:
+    RAM:
+    HDD size: for C:\ or /
+    HDD disk usage: for C:\ or /
+   ```
+
    
 # TODO
 - automatic configuration of slaves
