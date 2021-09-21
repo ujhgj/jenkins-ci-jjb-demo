@@ -41,8 +41,7 @@ Visit the sites for installation instructions.
    ```
 5. Run agents on each node:
    ```
-   vagrant ssh slave1
-   sudo run-jenkins-agent.sh
+   vagrant ssh slave1 -c 'sudo run-jenkins-agent.sh'
    ```
    ```
    vagrant ssh slave2
@@ -69,12 +68,13 @@ password: admin
 At this point you are able to push commit to git repository and build will be triggered (pollSCM trigger). For example:
 ```bash
 echo test > test.txt
-commit -am 'test'
-GIT_SSH_COMMAND="ssh -p 2200" git push vagrant master
+git add .
+git commit -am 'test'
+GIT_SSH_COMMAND="ssh -p 2200 -o StrictHostKeyChecking=no" git push vagrant master
 ```
 Visit http://127.0.0.1:8080/job/multibranch_variant/
 
 # TODO
-- automatic launch for slaves
+- automatic launch of jenkins agents
 - make secrets for accessing demo git repository generated on-fly 
 - move admin:admin for ansible to group vars

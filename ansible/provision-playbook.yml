@@ -48,7 +48,6 @@
           - openjdk-11-jre
     - role: geerlingguy.jenkins
       vars:
-        jenkins_admin_password_file: /vagrant/initialAdminPassword
         jenkins_plugins:
           # 'Pipeline' plugin and its deps
           - longName: Font Awesome API Plugin
@@ -241,23 +240,6 @@
           - longName: Jenkins Git plugin
             name: git
             version: 4.8.2
-  tasks:
-    - name: Get jenkins-cli.jar
-      get_url:
-        url: http://localhost:8080/jnlpJars/jenkins-cli.jar
-        dest: /var/lib/jenkins/jenkins-cli.jar
-
-    - name: Add slaves
-      include_tasks: add-slave.yml
-      loop:
-        - linux-slave.xml
-        - windows-slave.xml
-
-    - name: Add secret (git private key) for pipeline
-      include_tasks: add-secret.yml
-      loop:
-        - git_key.xml
-
 
 ## setup demo git repository
 - hosts: master
@@ -270,3 +252,24 @@
           - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLHvdSCWaPYBDoYh/yVMxfSDlH3un8NdDrqFC55YYIKTqaa40TSk9AWEe8/wDNcw1emyqP8ed1rtGVtevyxRWyo=
         git_repos:
           - path: test.git
+
+- hosts: master
+  become: yes
+  tasks:
+    - name: Get jenkins-cli.jar
+      get_url:
+        url: http://localhost:8080/jnlpJars/jenkins-cli.jar
+        dest: /var/lib/jenkins/jenkins-cli.jar
+      retries: 3 # wait till restart completes
+      delay: 15
+
+    - name: Add slaves
+      include_tasks: add-slave.yml
+      loop:
+        - linux-slave.xml
+        - windows-slave.xml
+
+    - name: Add secret (git private key) for pipeline
+      include_tasks: add-secret.yml
+      loop:
+        - git_key.xml

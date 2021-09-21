@@ -59,7 +59,10 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/provision-playbook.yml"
     ansible.host_vars = {
-          "master" => {"user_git_public_key" => settings['user_git_public_key']}
+          "master" => {
+              "user_git_public_key" => settings['user_git_public_key'],
+              "jenkins_admin_password_file" => "/vagrant/initialAdminPassword",
+            }
         }
   end
 end
