@@ -72,7 +72,6 @@ GIT_SSH_COMMAND="ssh -p 2200" git push vagrant master
 Visit http://127.0.0.1:8080/job/multibranch_variant/
 
 # TODO
-- automatic configuration of slaves
-- move admin:admin to group vars
-- ssh keys for git server
-- split jobs
+- automatic launch for slaves
+- move admin:admin for ansible to group vars
+- parametrize ssh keys for git server and automatically add credentials for pipeline
