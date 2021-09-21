@@ -242,9 +242,30 @@
           - longName: Jenkins Git plugin
             name: git
             version: 4.8.2
+  tasks:
+    - name: Get jenkins-cli.jar
+      get_url:
+        url: http://localhost:8080/jnlpJars/jenkins-cli.jar
+        dest: /var/lib/jenkins/jenkins-cli.jar
+
+    - name: Add slaves
+      copy:
+        src: "{{ item }}"
+        dest: "/var/lib/jenkins/{{ item }}"
+      loop:
+        - linux-slave.xml
+        - windows-slave.xml
+
+    - name: Add slaves
+      shell: "java -jar jenkins-cli.jar -auth admin:admin -s http://localhost:8080 create-node < {{ item }}"
+      loop:
+        - linux-slave.xml
+        - windows-slave.xml
+      args:
+        chdir: /var/lib/jenkins
 
 
-# setup demo git repository
+## setup demo git repository
 - hosts: master
   become: yes
   roles:

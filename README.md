@@ -46,11 +46,7 @@ user: admin
 password: admin
 ```
 
-5. **Manually** add these two slaves on the page http://127.0.0.1:8080/computer/new:
-   - windows-slave
-   - linux-slave
-
-   Then run agents on each node:
+5. Run agents on each node:
    ```
    vagrant ssh slave1
    sudo run-jenkins-agent.sh
@@ -77,5 +73,6 @@ Visit http://127.0.0.1:8080/job/multibranch_variant/
 
 # TODO
 - automatic configuration of slaves
-- split jobs
+- move admin:admin to group vars
 - ssh keys for git server
+- split jobs
