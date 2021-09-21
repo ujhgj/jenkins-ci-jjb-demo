@@ -76,5 +76,5 @@ Visit http://127.0.0.1:8080/job/multibranch_variant/
 
 # TODO
 - automatic launch of jenkins agents
-- make secrets for accessing demo git repository generated on-fly 
+- make secrets for accessing demo git repository generated on-the-fly 
 - move admin:admin for ansible to group vars
