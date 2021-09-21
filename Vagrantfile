@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'yaml'
+settings = YAML.load_file 'settings.yaml'
+
 MACHINES = {
   :master => {
     :box => "debian/buster64",
@@ -55,5 +58,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/provision-playbook.yml"
+    ansible.host_vars = {
+          "master" => {"user_git_public_key" => settings['user_git_public_key']}
+        }
   end
 end

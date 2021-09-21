@@ -42,7 +42,6 @@
 - hosts: master
   become: yes
   roles:
-    - role: silpion.gitolite
     - role: geerlingguy.java
       vars:
         java_packages:
@@ -249,20 +248,15 @@
         dest: /var/lib/jenkins/jenkins-cli.jar
 
     - name: Add slaves
-      copy:
-        src: "{{ item }}"
-        dest: "/var/lib/jenkins/{{ item }}"
+      include_tasks: add-slave.yml
       loop:
         - linux-slave.xml
         - windows-slave.xml
 
-    - name: Add slaves
-      shell: "java -jar jenkins-cli.jar -auth admin:admin -s http://localhost:8080 create-node < {{ item }}"
+    - name: Add secret (git private key) for pipeline
+      include_tasks: add-secret.yml
       loop:
-        - linux-slave.xml
-        - windows-slave.xml
-      args:
-        chdir: /var/lib/jenkins
+        - git_key.xml
 
 
 ## setup demo git repository
@@ -272,7 +266,7 @@
     - role: daveol.git_server
       vars:
         git_keys:
-          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCudkBl7YqUE+Jslvs4t+KQU+EGqn7/Iln52VgMugcdk+YtcarmS4pAP03ox825+cAjxnkk9c+MpKDVsnq9nplEK2lxFTtb+hWnBFeipd64kzy5L3myS+7709wpgPTKW0jN9hAYVzDOZ41ffIHLNCS5ulV3Pfsd6fynOYaIN6ZhyBIIsvWkIuXMYVfv6VDUTsRxlqgHXPhE98z6trroi1/FZ/I1jg4ZobXldw4sCmQaTZ3R5qPNGsskpl3LiGy/y69JrQyn00OZM6aOXmVsWT7/frg1pp4ioZQOZzb/hEtKi94ISEAu5Rh5Mhwh5oGUb2+bDnBcb70Ofp9hkZHcRs9f alex@alex-K52F
+          - "{{ user_git_public_key }}"
           - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLHvdSCWaPYBDoYh/yVMxfSDlH3un8NdDrqFC55YYIKTqaa40TSk9AWEe8/wDNcw1emyqP8ed1rtGVtevyxRWyo=
         git_repos:
           - path: test.git

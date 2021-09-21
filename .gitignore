@@ -2,3 +2,4 @@
 .venv/
 ansible/roles/*
 !ansible/roles/openjdk11jre-windows/
+settings.yaml

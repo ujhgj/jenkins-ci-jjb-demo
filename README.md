@@ -31,12 +31,15 @@ Visit the sites for installation instructions.
    pip install -r requirements.txt
    ansible-galaxy install --roles-path ansible/roles --role-file ansible/requirements.yml
    ```
-3. Get jenkins nodes up and running (warning! good internet connection required):
+3. You'll need to access demo git repository. Therefore add ssh public key to settings.yaml file: 
+   ```bash
+   echo "user_git_public_key: $(<~/.ssh/id_rsa.pub)" > settings.yaml
+   ```
+4. Get jenkins nodes up and running (warning! good internet connection required):
    ```bash
    vagrant up
    ```
-
-4. Run agents on each node:
+5. Run agents on each node:
    ```
    vagrant ssh slave1
    sudo run-jenkins-agent.sh
@@ -47,20 +50,16 @@ Visit the sites for installation instructions.
    ```
 
 At this point you have Jenkins server and 2 slaves up and running. You can log into using credentials
-
-   ```
-   user: admin
-   password: admin
-   ```
+```
+user: admin
+password: admin
+```
    
 5. Set up pipeline using JJB:
    ```bash
    jenkins-jobs --conf jenkins-job-builder/config.ini --server jenkins-master update jenkins-job-builder/pipeline.yml
    ```
-
-6. Add credentials for ssh to git server (todo explanation).
-
-7. Setup demo repo:
+6. Setup demo repo:
    ```
    git clone git@github.com:ujhgj/jenkins-ci-jjb-demo-application.git
    cd jenkins-ci-jjb-demo-application
@@ -77,5 +76,5 @@ Visit http://127.0.0.1:8080/job/multibranch_variant/
 
 # TODO
 - automatic launch for slaves
+- make secrets for accessing demo git repository generated on-fly 
 - move admin:admin for ansible to group vars
-- parametrize ssh keys for git server and automatically add credentials for pipeline

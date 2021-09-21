@@ -1,0 +1,11 @@
+- name: "Copy slave config file {{ item }}"
+  copy:
+    src: "{{ item }}"
+    dest: "/var/lib/jenkins/{{ item }}"
+  register: config_copy
+
+- name: "Add slave node from {{ item }}"
+  shell: "java -jar jenkins-cli.jar -auth admin:admin -s http://localhost:8080 create-node < {{ item }}"
+  args:
+    chdir: /var/lib/jenkins
+  when: config_copy.changed
