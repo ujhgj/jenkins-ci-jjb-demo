@@ -1,4 +1,5 @@
 ---
+## setup linux slave
 - hosts: slave1
   become: yes
   roles:
@@ -7,30 +8,41 @@
         java_packages:
           - openjdk-11-jre
   tasks:
-    - copy:
+    - name: Install git to work with SCM-based pipeline
+      apt:
+        name: git
+        state: present
+    - name: Copy script for running Jenkins agent
+      copy:
         src: "{{ item }}"
         dest: "/usr/bin/{{ item }}"
         mode: 0777
       loop:
         - run-jenkins-agent.sh
-        - node-info.sh
 
+## setup windows slave
 - hosts: slave2
+  vars:
+    ansible_winrm_scheme: http
   roles:
     - role: openjdk11jre-windows
-      vars:
-        ansible_winrm_scheme: http
   tasks:
-    - win_copy:
+    - name: Install git to work with SCM-based pipeline
+      win_chocolatey:
+        name: git
+        state: present
+    - name: Copy script for running Jenkins agent
+      win_copy:
         src: "{{ item }}"
         dest: "C:\\Users\\vagrant\\{{ item }}"
       loop:
         - run-jenkins-agent.ps1
-        - node-info.ps1
 
+## setup master
 - hosts: master
   become: yes
   roles:
+    - role: silpion.gitolite
     - role: geerlingguy.java
       vars:
         java_packages:
@@ -39,7 +51,7 @@
       vars:
         jenkins_admin_password_file: /vagrant/initialAdminPassword
         jenkins_plugins:
-          # 'Pipeline' plugin and its dependencies
+          # 'Pipeline' plugin and its deps
           - longName: Font Awesome API Plugin
             name: font-awesome-api
             version: 5.15.4-1
@@ -226,3 +238,20 @@
           - longName: JUnit Plugin
             name: junit
             version: '1.53'
+          # end of Pipeline plugin deps
+          - longName: Jenkins Git plugin
+            name: git
+            version: 4.8.2
+
+
+# setup demo git repository
+- hosts: master
+  become: yes
+  roles:
+    - role: daveol.git_server
+      vars:
+        git_keys:
+          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCudkBl7YqUE+Jslvs4t+KQU+EGqn7/Iln52VgMugcdk+YtcarmS4pAP03ox825+cAjxnkk9c+MpKDVsnq9nplEK2lxFTtb+hWnBFeipd64kzy5L3myS+7709wpgPTKW0jN9hAYVzDOZ41ffIHLNCS5ulV3Pfsd6fynOYaIN6ZhyBIIsvWkIuXMYVfv6VDUTsRxlqgHXPhE98z6trroi1/FZ/I1jg4ZobXldw4sCmQaTZ3R5qPNGsskpl3LiGy/y69JrQyn00OZM6aOXmVsWT7/frg1pp4ioZQOZzb/hEtKi94ISEAu5Rh5Mhwh5oGUb2+bDnBcb70Ofp9hkZHcRs9f alex@alex-K52F
+          - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLHvdSCWaPYBDoYh/yVMxfSDlH3un8NdDrqFC55YYIKTqaa40TSk9AWEe8/wDNcw1emyqP8ed1rtGVtevyxRWyo=
+        git_repos:
+          - path: test.git

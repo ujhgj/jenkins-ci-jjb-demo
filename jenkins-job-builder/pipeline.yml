@@ -1,28 +1,10 @@
 - job:
-    name: test_job
-    project-type: pipeline
-    dsl: |
-      pipeline {
-          agent any
-          stages {
-              stage('Parallel Stage') {
-                  parallel {
-                      stage('Linux') {
-                          agent { node "linux-slave" }
-                          steps {
-                              sh "node-info.sh | tee linux-node-info.txt"
-                              archiveArtifacts artifacts: 'linux-node-info.txt', onlyIfSuccessful: true
-                          }
-                      }
-                      stage('Windows') {
-                          agent { node "windows-slave" }
-                          steps {
-                              bat "powershell.exe C:\\Users\\vagrant\\node-info.ps1 > windows-node-info.txt"
-                              bat "type windows-node-info.txt"
-                              archiveArtifacts artifacts: 'windows-node-info.txt', onlyIfSuccessful: true
-                          }
-                      }
-                  }
-              }
-          }
-      }
+    name: 'multibranch_variant'
+    project-type: multibranch
+    periodic-folder-trigger: 1m
+    script-path: Jenkinsfile
+    scm:
+      - git:
+          url: git@192.168.50.100:test.git
+          credentials-id: git
+          discover-tags: true

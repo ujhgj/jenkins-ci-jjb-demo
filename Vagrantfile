@@ -10,22 +10,12 @@ MACHINES = {
     :forwarded_ports => {
       "8080" => "8080"
     },
-#     :provision => {
-#       :ansible => {
-#         :playbook => "ansible/master.yml"
-#       }
-#     }
   },
   :slave1 => {
     :box => "debian/buster64",
     :ip_addr => "192.168.50.101",
     :memory => 512,
     :cpus => 1,
-#     :provision => {
-#       :ansible => {
-#         :playbook => "ansible/slave1.yml"
-#       }
-#     }
   },
   :slave2 => {
     :box => "Windows-Server-2019-Standard",
@@ -33,11 +23,6 @@ MACHINES = {
     :ip_addr => "192.168.50.102",
     :memory => 512,
     :cpus => 1,
-#     :provision => {
-#       :ansible => {
-#         :playbook => "ansible/slave2.yml"
-#       }
-#     }
   }
 }
 
@@ -64,12 +49,6 @@ Vagrant.configure("2") do |config|
         v.memory = boxconfig[:memory]
         v.cpus = boxconfig[:cpus]
       end
-
-#       if (boxconfig.has_key?(:provision))
-#         if (boxconfig[:provision].has_key?(:ansible))
-#
-#         end
-#       end
 
     end
   end

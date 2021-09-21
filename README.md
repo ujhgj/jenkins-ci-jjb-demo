@@ -15,7 +15,7 @@ Environment is configured using Infrastructure as Code approach with Vagrant and
 You must have this software installed and configured:
 - [Vagrant](https://www.vagrantup.com)
 - [Virtualbox](https://www.virtualbox.org)
-- [python3.8](https://www.python.org)
+- [python3](https://www.python.org)
 
 Visit the sites for installation instructions.
 
@@ -23,7 +23,7 @@ Visit the sites for installation instructions.
 
 1. Create python virtual environment and activate it:
    ```bash
-   python3.8 -m venv .venv
+   python3 -m venv .venv
    source .venv/bin/activate
    ```
 2. Install dependencies:
@@ -31,7 +31,7 @@ Visit the sites for installation instructions.
    pip install -r requirements.txt
    ansible-galaxy install --roles-path ansible/roles --role-file ansible/requirements.yml
    ```
-3. Get jenkins nodes up and running:
+3. Get jenkins nodes up and running (warning! good internet connection required):
    ```bash
    vagrant up
    ```
@@ -39,12 +39,14 @@ Visit the sites for installation instructions.
    ```bash
    jenkins-jobs --conf jenkins-job-builder/config.ini --server jenkins-master update jenkins-job-builder/pipeline.yml
    ```
-5. **Manually** add jenkins' slaves: login using these credentials
-   ```
-   user: admin
-   password: admin
-   ```
-   to the page http://127.0.0.1:8080/computer/new and add these two slaves:
+   
+At this point you have Jenkins server up and running. Yo can log into using credentials
+```
+user: admin
+password: admin
+```
+
+5. **Manually** add these two slaves on the page http://127.0.0.1:8080/computer/new:
    - windows-slave
    - linux-slave
 
@@ -55,27 +57,25 @@ Visit the sites for installation instructions.
    ```
    ```
    vagrant ssh slave2
-   powershell.exe  C:\Users\vagrant\run-jenkins-agent.ps1
+   powershell.exe C:\Users\vagrant\run-jenkins-agent.ps1
    ```
-6. At this point you will be able to use the pipeline: http://127.0.0.1:8080/job/test_job/ 
-    Pipeline posts system info in an unified format:
-    ```
-    Host name:
-    OS version:
-    CPU cores:
-    RAM:
-    HDD size: for C:\ or /
-    HDD disk usage: for C:\ or /
-   ```
-
    
+6. Setup demo repo:
+   ```
+   git clone git@github.com:ujhgj/jenkins-ci-jjb-demo-application.git
+   cd jenkins-ci-jjb-demo-application
+   git remote add vagrant git@127.0.0.1:test.git
+   ```
+   
+At this point you are able to push commit to git repository and build will be triggered (pollSCM trigger). For example:
+```bash
+echo test > test.txt
+commit -am 'test'
+GIT_SSH_COMMAND="ssh -p 2200" git push vagrant master
+```
+Visit http://127.0.0.1:8080/job/multibranch_variant/
+
 # TODO
 - automatic configuration of slaves
-- implement gathering of system parameters from the slaves using Groovy/Java
-- implement: 
-  1. A git commit to some project triggers in parallel:
-  - a job on a windows host
-  - a job on a linux host
-  2. Also, a user should be able to trigger the same workflow and have options to specify:
-  - platform: windows, linux or both.
-  - git branch or tag
+- split jobs
+- ssh keys for git server
