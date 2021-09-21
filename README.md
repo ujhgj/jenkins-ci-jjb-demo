@@ -35,18 +35,8 @@ Visit the sites for installation instructions.
    ```bash
    vagrant up
    ```
-4. Set up pipeline using JJB:
-   ```bash
-   jenkins-jobs --conf jenkins-job-builder/config.ini --server jenkins-master update jenkins-job-builder/pipeline.yml
-   ```
-   
-At this point you have Jenkins server up and running. Yo can log into using credentials
-```
-user: admin
-password: admin
-```
 
-5. Run agents on each node:
+4. Run agents on each node:
    ```
    vagrant ssh slave1
    sudo run-jenkins-agent.sh
@@ -55,8 +45,22 @@ password: admin
    vagrant ssh slave2
    powershell.exe C:\Users\vagrant\run-jenkins-agent.ps1
    ```
+
+At this point you have Jenkins server and 2 slaves up and running. You can log into using credentials
+
+   ```
+   user: admin
+   password: admin
+   ```
    
-6. Setup demo repo:
+5. Set up pipeline using JJB:
+   ```bash
+   jenkins-jobs --conf jenkins-job-builder/config.ini --server jenkins-master update jenkins-job-builder/pipeline.yml
+   ```
+
+6. Add credentials for ssh to git server (todo explanation).
+
+7. Setup demo repo:
    ```
    git clone git@github.com:ujhgj/jenkins-ci-jjb-demo-application.git
    cd jenkins-ci-jjb-demo-application
