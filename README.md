@@ -72,7 +72,7 @@ git add .
 git commit -am 'test'
 GIT_SSH_COMMAND="ssh -p 2200 -o StrictHostKeyChecking=no" git push vagrant master
 ```
-(Note: port forwarding for ssh by vagrant may be different for you).
+(Note: port forwarding for ssh made by vagrant may be different for you).
 
 Visit http://127.0.0.1:8080/job/build_all_platforms/
 
