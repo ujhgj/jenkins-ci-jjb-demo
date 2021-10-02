@@ -49,7 +49,9 @@
     - role: geerlingguy.jenkins
       vars:
         jenkins_plugins:
-          # 'Pipeline' plugin and its deps
+          - longName: OWASP Markup Formatter Plugin
+            name: antisamy-markup-formatter
+            version: '2.1'
           - longName: Font Awesome API Plugin
             name: font-awesome-api
             version: 5.15.4-1
@@ -62,18 +64,12 @@
           - longName: Jenkins Mailer Plugin
             name: mailer
             version: '1.34'
-          - longName: 'Pipeline: Declarative Extension Points API'
-            name: pipeline-model-extensions
-            version: 1.9.2
           - longName: ECharts API Plugin
             name: echarts-api
             version: 5.1.2-11
           - longName: Popper.js API Plugin
             name: popper-api
             version: 1.16.1-2
-          - longName: 'JavaScript GUI Lib: Handlebars bundle plugin'
-            name: handlebars
-            version: 3.0.8
           - longName: Jenkins Git client plugin
             name: git-client
             version: 3.9.0
@@ -86,51 +82,51 @@
           - longName: bouncycastle API Plugin
             name: bouncycastle-api
             version: '2.24'
-          - longName: 'Pipeline: REST API Plugin'
-            name: pipeline-rest-api
-            version: '2.19'
-          - longName: 'JavaScript GUI Lib: ACE Editor bundle plugin'
-            name: ace-editor
-            version: '1.1'
+          - longName: Ant Plugin
+            name: ant
+            version: '1.11'
+          - longName: WMI Windows Agents Plugin
+            name: windows-slaves
+            version: '1.8'
+          - longName: Jenkins Parameterized Trigger plugin
+            name: parameterized-trigger
+            version: '2.41'
+          - longName: Copy Artifact Plugin
+            name: copyartifact
+            version: 1.46.2
+          - longName: Javadoc Plugin
+            name: javadoc
+            version: '1.6'
+          - longName: Token Macro Plugin
+            name: token-macro
+            version: 266.v44a80cf277fd
           - longName: Caffeine API Plugin
             name: caffeine-api
             version: 2.9.2-29.v717aac953ff3
           - longName: Credentials Plugin
             name: credentials
             version: 2.6.1
-          - longName: Pipeline Graph Analysis Plugin
-            name: pipeline-graph-analysis
-            version: '1.11'
-          - longName: 'Pipeline: Milestone Step'
-            name: pipeline-milestone-step
-            version: 1.3.2
-          - longName: 'Pipeline: Model API'
-            name: pipeline-model-api
-            version: 1.9.2
-          - longName: 'Pipeline: Nodes and Processes'
-            name: workflow-durable-task-step
-            version: '2.39'
-          - longName: 'Pipeline: Input Step'
-            name: pipeline-input-step
-            version: '2.12'
+          - longName: Conditional BuildStep
+            name: conditional-buildstep
+            version: 1.4.1
+          - longName: built-on-column
+            name: built-on-column
+            version: '1.1'
           - longName: 'Pipeline: Supporting APIs'
             name: workflow-support
             version: '3.8'
           - longName: Popper.js 2 API Plugin
             name: popper2-api
             version: 2.10.1-1
-          - longName: Durable Task Plugin
-            name: durable-task
-            version: '1.39'
+          - longName: Environment Injector Plugin
+            name: envinject
+            version: 2.4.0
           - longName: Matrix Project Plugin
             name: matrix-project
             version: '1.19'
           - longName: Command Agent Launcher Plugin
             name: command-launcher
             version: '1.6'
-          - longName: 'Pipeline: Stage Tags Metadata'
-            name: pipeline-stage-tags-metadata
-            version: 1.9.2
           - longName: Plain Credentials Plugin
             name: plain-credentials
             version: '1.7'
@@ -140,48 +136,30 @@
           - longName: Oracle Java SE Development Kit Installer Plugin
             name: jdk-tool
             version: '1.5'
-          - longName: 'Pipeline: Stage Step'
-            name: pipeline-stage-step
-            version: '2.5'
-          - longName: 'Pipeline: Declarative'
-            name: pipeline-model-definition
-            version: 1.9.2
           - longName: SCM API Plugin
             name: scm-api
             version: 2.6.5
-          - longName: 'Pipeline: Shared Groovy Libraries'
-            name: workflow-cps-global-lib
-            version: '2.21'
+          - longName: Maven Integration plugin
+            name: maven-plugin
+            version: '3.12'
           - longName: Bootstrap 4 API Plugin
             name: bootstrap4-api
             version: 4.6.0-3
           - longName: 'Pipeline: SCM Step'
             name: workflow-scm-step
             version: '2.13'
-          - longName: Lockable Resources plugin
-            name: lockable-resources
-            version: '2.11'
-          - longName: 'Pipeline: Multibranch'
-            name: workflow-multibranch
-            version: '2.26'
-          - longName: 'Pipeline: Stage View Plugin'
-            name: pipeline-stage-view
-            version: '2.19'
-          - longName: Pipeline
-            name: workflow-aggregator
-            version: '2.6'
-          - longName: 'Pipeline: Basic Steps'
-            name: workflow-basic-steps
-            version: '2.24'
+          - longName: Matrix Authorization Strategy Plugin
+            name: matrix-auth
+            version: 2.6.8
           - longName: SSH Credentials Plugin
             name: ssh-credentials
             version: '1.19'
-          - longName: 'Pipeline: Groovy'
-            name: workflow-cps
-            version: '2.94'
           - longName: Display URL API
             name: display-url-api
             version: 2.3.5
+          - longName: EnvInject API Plugin
+            name: envinject-api
+            version: '1.7'
           - longName: Plugin Utilities API Plugin
             name: plugin-util-api
             version: 2.4.0
@@ -194,52 +172,45 @@
           - longName: Jenkins JSch dependency plugin
             name: jsch
             version: 0.1.55.2
+          - longName: Jenkins Multijob plugin
+            name: jenkins-multijob-plugin
+            version: '1.36'
           - longName: 'Pipeline: Job'
             name: workflow-job
             version: '2.41'
-          - longName: 'JavaScript GUI Lib: Moment.js bundle plugin'
-            name: momentjs
-            version: 1.1.1
-          - longName: Jenkins GIT server Plugin
-            name: git-server
-            version: '1.10'
           - longName: Jenkins Apache HttpComponents Client 4.x API Plugin
             name: apache-httpcomponents-client-4-api
             version: 4.5.13-1.0
-          - longName: 'Pipeline: Build Step'
-            name: pipeline-build-step
-            version: '2.15'
           - longName: 'Pipeline: API'
             name: workflow-api
             version: '2.46'
           - longName: Jackson 2 API Plugin
             name: jackson2-api
             version: 2.12.4
-          - longName: Branch API Plugin
-            name: branch-api
-            version: 2.6.5
           - longName: SSH server
             name: sshd
             version: 3.1.0
-          - longName: Folders Plugin
-            name: cloudbees-folder
-            version: '6.16'
           - longName: Credentials Binding Plugin
             name: credentials-binding
             version: '1.27'
           - longName: JAXB plugin
             name: jaxb
             version: 2.3.0.1
+          - longName: Run Condition Plugin
+            name: run-condition
+            version: '1.5'
+          - longName: Jenkins Git plugin
+            name: git
+            version: 4.8.2
+          - longName: External Monitor Job Type Plugin
+            name: external-monitor-job
+            version: '1.7'
           - longName: Checks API plugin
             name: checks-api
             version: 1.7.2
           - longName: JUnit Plugin
             name: junit
             version: '1.53'
-          # end of Pipeline plugin deps
-          - longName: Jenkins Git plugin
-            name: git
-            version: 4.8.2
 
 ## setup demo git repository
 - hosts: master

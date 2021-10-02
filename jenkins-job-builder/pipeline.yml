@@ -1,10 +1,88 @@
 - job:
-    name: 'multibranch_variant'
-    project-type: multibranch
-    periodic-folder-trigger: 1m
-    script-path: Jenkinsfile
+    name: build_all_platforms
+    project-type: multijob
+    parameters:
+      - bool:
+          name: BUILD_WINDOWS
+          default: true
+      - bool:
+          name: BUILD_LINUX
+          default: true
+      - string:
+          name: BRANCH
+          default: ''
+          description: 'Branch Specifier (use refs/tags/<tagName> for tags)'
+          trim: true
+    triggers:
+      - pollscm:
+          cron: '* * * * *'
+    scm: &scm
+      - git:
+          url: git@192.168.50.100:test.git
+          credentials-id: git_key
+          branches:
+            - '${BRANCH}'
+    builders:
+      - multijob:
+          name: builds
+          condition: COMPLETED
+          execution-type: PARALLEL
+          projects:
+            - name: _linux_build
+              current-parameters: true
+              enable-condition: '${BUILD_LINUX}'
+              git-revision: true
+            - name: _windows_build
+              current-parameters: true
+              enable-condition: '${BUILD_WINDOWS}'
+              git-revision: true
+      - conditional-step:
+          condition-kind: boolean-expression
+          condition-expression: '${ENV,var="BUILD_LINUX"}'
+          steps:
+            - copyartifact:
+                project: _linux_build
+                filter: '*-node-info.txt'
+                optional: true
+                which-build: multijob-build
+      - conditional-step:
+          condition-kind: boolean-expression
+          condition-expression: '${ENV,var="BUILD_WINDOWS"}'
+          steps:
+            - copyartifact:
+                project: _windows_build
+                filter: '*-node-info.txt'
+                optional: true
+                which-build: multijob-build
+    publishers:
+      - archive:
+          artifacts: '*-node-info.txt'
+
+- job-template:
+    name: '_{platform}_build'
+    node: '{platform}'
     scm:
       - git:
           url: git@192.168.50.100:test.git
           credentials-id: git_key
-          discover-tags: true
+    builders:
+      - '{shell}': '{cmd}'
+    publishers:
+      - archive:
+          artifacts: '*-node-info.txt'
+
+- project:
+    name: linux_build
+    jobs:
+      - '_{platform}_build':
+          platform: linux
+          shell: shell
+          cmd: ./node-info.sh > linux-node-info.txt
+
+- project:
+    name: windows_build
+    jobs:
+      - '_{platform}_build':
+          platform: windows
+          shell: batch
+          cmd: powershell.exe .\\node-info.ps1 > windows-node-info.txt
