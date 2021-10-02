@@ -16,7 +16,7 @@
     triggers:
       - pollscm:
           cron: '* * * * *'
-    scm: &scm
+    scm:
       - git:
           url: git@192.168.50.100:test.git
           credentials-id: git_key
