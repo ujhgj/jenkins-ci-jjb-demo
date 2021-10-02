@@ -74,7 +74,7 @@ GIT_SSH_COMMAND="ssh -p 2200 -o StrictHostKeyChecking=no" git push vagrant maste
 ```
 (Note: port forwarding for ssh by vagrant may be different for you).
 
-Visit http://127.0.0.1:8080/job/multibranch_variant/
+Visit http://127.0.0.1:8080/job/build_all_platforms/
 
 # TODO
 - automatic launch of jenkins agents
